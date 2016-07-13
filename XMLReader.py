@@ -11,7 +11,7 @@ matrix = []
 
 groundwith = -1
 
-umbral = 0.55
+umbral = 0.538
 
 FPRate = []
 FNRate = []
@@ -62,6 +62,16 @@ for childUser in rootUsers:
         #TNRateTemp = TN / (TN + FP)
         FPRateTemp = FP / (FP + TN)
         FNRateTemp = FN / (FN + TP)
+
+        print(TP)
+        print(TN)
+        print(FP)
+        print(FN)
+
+        print(FPRateTemp)
+        print(FNRateTemp)
+
+        print("---------------------")
 
         FPRate.append(FPRateTemp)
         FNRate.append(FNRateTemp)

@@ -1,47 +1,26 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# score = np.array([0.9, 0.8, 0.7, 0.6, 0.55, 0.54, 0.53, 0.52, 0.51, 0.505, 0.4, 0.39, 0.38, 0.37, 0.36, 0.35, 0.34, 0.33, 0.30, 0.1])
-# y = np.array([1,1,0, 1, 0, 0, 0, 0, 1, 0, 1,0, 1, 0, 0, 0, 1 , 0, 1, 0])
-#
-# print(score)
-#
-# roc_x = []
-# roc_y = []
-# min_score = min(score)
-# max_score = max(score)
-# thr = np.linspace(min_score, max_score, 30)
-#
-# print(thr)
-#
-# FP=0
-# TP=0
-# N = sum(y)
-# P = len(y) - N
-#
-# for (i, T) in enumerate(thr):
-#     for i in range(0, len(score)):
-#         print(T)
-#         print(i)
-#         if (score[i] > T):
-#             if (y[i]==1):
-#                 TP = TP + 1
-#             if (y[i]==0):
-#                 FP = FP + 1
-#     roc_x.append(FP/float(N))
-#     roc_y.append(TP/float(P))
-#     FP=0
-#     TP=0
-#
-# plt.scatter(roc_x, roc_y)
+def normalize_list(lst):
+    r = max(lst) - min(lst)
+    # Normalize
+    normal = map(lambda x: (x - min(lst)) / r, lst)
+    # print(list(normal))
+    return list(normal)
 
 def printROC(FPRate, FNRate):
-    x = [0.0, 1.0]
+    x = [-0.1, 1.1]
+    FPRate = normalize_list(FPRate)
+    FNRate = normalize_list(FNRate)
+
+    # FPRate, FNRate = (list(x) for x in zip(*sorted(zip(FPRate, FNRate), reverse=True, key=lambda pair: pair[0])))
+    FNRate, FPRate = (list(x) for x in zip(*sorted(zip(FNRate, FPRate), reverse=True, key=lambda pair: pair[0])))
+
     print(FPRate)
-    FPRate.sort(reverse=True)
-    print(FPRate)
+    print(FNRate)
+
     plt.plot(x, x, linestyle='dashed', color='red', linewidth=2, label='y = x')
-    plt.plot(FPRate, FNRate, linewidth = 3,color='blue', alpha=0.5)
+    plt.plot(FNRate, FPRate, linewidth=3,color='blue', alpha=0.5)
     plt.xlabel('% FN')
     plt.ylabel('% FP')
     plt.title('ROC example')
