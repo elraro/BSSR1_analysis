@@ -2,9 +2,8 @@ import xml.etree.ElementTree as ET
 import PrintROC
 import numpy as np
 
-treeEnrollees = ET.parse('/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/enrollees.xml')
 treeUsers = ET.parse('/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml')
-rootEnrollees = treeEnrollees.getroot()
+#treeUsers = ET.parse('/home/alberto/Desktop/bssr1/face_x_face/sets/dos/users.xml')
 rootUsers = treeUsers.getroot()
 
 FPRate = []
@@ -24,6 +23,7 @@ for umbral in np.arange(0, 1, 0.01):
         groundwith += 1
 
         with open('/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/face/C/' + childUser.attrib['name']) as f:
+        #with open("/home/alberto/Desktop/bssr1/face_x_face/sims/dos/face/C/" + childUser.attrib['name']) as f:
             lines = f.readlines()
             scores = lines[2:] # remove first 2 elements
             scores.pop() # remove last element
