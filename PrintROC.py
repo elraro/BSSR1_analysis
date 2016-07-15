@@ -25,7 +25,7 @@ def printROC(FPRate, FNRate, name):
     plt.plot(FNRate, FPRate, linewidth=3,color='blue', alpha=0.5)
     plt.xlabel('% FN')
     plt.ylabel('% FP')
-    plt.title('Curva ROC ' + name)
+    plt.title(name)
     plt.legend(loc="lower right")
     # plt.show()
     plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
