@@ -3,31 +3,16 @@ import PrintROC
 import numpy as np
 
 treeUsers = ET.parse('/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml')
+#treeUsers = ET.parse('/home/alberto/Desktop/bssr1/face_x_face/sets/dos/users.xml')
 rootUsers = treeUsers.getroot()
 
-FPRate = []
 FNRate = []
+FPRate = []
 
 TP = 0
 TN = 0
 FP = 0
 FN = 0
-
-matrix = []
-
-count = 0
-
-for childUser in rootUsers:
-    count += 1
-    with open('/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/face/C/' + childUser.attrib['name']) as f:
-        lines = f.readlines()
-        scores = lines[2:]  # remove first 2 elements
-        scores.pop()  # remove last element
-        scores = [float(score.strip('\n')) for score in scores]
-        print(scores)
-
-    if count == 4:
-        break
 
 for umbral in np.arange(0, 1, 0.01):
 
@@ -38,6 +23,7 @@ for umbral in np.arange(0, 1, 0.01):
         groundwith += 1
 
         with open('/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/face/C/' + childUser.attrib['name']) as f:
+        #with open("/home/alberto/Desktop/bssr1/face_x_face/sims/dos/face/C/" + childUser.attrib['name']) as f:
             lines = f.readlines()
             scores = lines[2:] # remove first 2 elements
             scores.pop() # remove last element
@@ -61,7 +47,7 @@ for umbral in np.arange(0, 1, 0.01):
                         TN += 1
 
     # Voy a calcular ahora los rates
+    FNRate.append(FN / (FN + + TP))
     FPRate.append(FP / (FP + TN))
-    FNRate.append(FN / (FN + TP))
 
-PrintROC.printROC(FPRate, FNRate, "Curva ROC")
+PrintROC.printROC(FNRate, FPRate, "Curva ROC")
