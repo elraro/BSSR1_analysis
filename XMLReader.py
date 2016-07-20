@@ -6,6 +6,8 @@ treeUsers = ET.parse('/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml
 #treeUsers = ET.parse('/home/alberto/Desktop/bssr1/face_x_face/sets/dos/users.xml')
 rootUsers = treeUsers.getroot()
 
+TPRate = []
+TNRate = []
 FNRate = []
 FPRate = []
 
@@ -47,7 +49,10 @@ for umbral in np.arange(0, 1, 0.01):
                         TN += 1
 
     # Voy a calcular ahora los rates
+    TPRate.append(TP / (TP + FN))
+    TNRate.append(TN / (TN + FP))
     FNRate.append(FN / (FN + + TP))
     FPRate.append(FP / (FP + TN))
 
-PrintROC.printROC(FNRate, FPRate, "Curva ROC")
+PrintROC.printROC(FNRate, FPRate, "Curva_ROC_FN_FP")
+PrintROC.printROC2(FPRate, TPRate, "Curva_ROC_FP_TP")

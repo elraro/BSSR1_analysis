@@ -35,3 +35,30 @@ def printROC(FNRate, FPRate, name):
     # plt.show()
     plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
     plt.close()
+
+def printROC2(FPRate, TPRate, name):
+    x = [0, 1]
+    FPRate = normalize_list(FPRate)
+    TPRate = normalize_list(TPRate)
+
+    plt.figure()
+    plt.plot(x, x, linestyle='dashed', color='red', linewidth=2, label='y = x')
+    plt.plot(FPRate, TPRate, linewidth=1, color='blue', alpha=0.5)
+
+    dif = 1
+    index = 0
+    for y in range(0, len(TPRate)):
+        print(str(TPRate[y] - FPRate[y]))
+        if TPRate[y] - FPRate[y] < dif:
+            if (TPRate[y] - FPRate[y]) > 0:
+                dif = TPRate[y] - FPRate[y]
+                index = y
+
+    plt.axvline(x=(FPRate[index] + FPRate[index+1])/2, ymin=(TPRate[index] + TPRate[index+1])/2, ymax=1, color='black', linewidth=2, label='EER = ' + str(dif))
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title(name)
+    plt.legend(loc="lower right")
+    # plt.show()
+    plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
+    plt.close()
