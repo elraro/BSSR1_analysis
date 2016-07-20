@@ -21,13 +21,15 @@ def printROC(FNRate, FPRate, name):
     dif = 1
     index = 0
     for y in range(0, len(FPRate)):
-        print(str(FPRate[y] - FNRate[y]))
-        if FPRate[y] - FNRate[y] < dif:
-            if (FPRate[y] - FNRate[y]) > 0:
-                dif = FPRate[y] - FNRate[y]
-                index = y
+        print(str(abs(FPRate[y] - FNRate[y])))
+        print(index)
+        if abs(FPRate[y] - FNRate[y]) < dif:
+            dif = abs(FPRate[y] - FNRate[y])
+            index = y
 
-    plt.axvline(x=(FNRate[index] + FNRate[index+1])/2, ymin=0, ymax=(FPRate[index] + FPRate[index+1])/2, color='black', linewidth=2, label='EER = ' + str(dif))
+    print("eer: " + str((FPRate[index] + FNRate[index])/2))
+    print("index: " + str(index))
+    plt.axvline(x=(FNRate[index] + FNRate[index+1])/2, ymin=0, ymax=(FPRate[index] + FPRate[index+1])/2, color='black', linewidth=2, label='EER = ' + str((FNRate[index] + FNRate[index+1])/2))
     plt.xlabel('False Negative Rate')
     plt.ylabel('False Positive Rate')
     plt.title(name)

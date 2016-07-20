@@ -55,4 +55,4 @@ for umbral in np.arange(0, 1, 0.01):
     FPRate.append(FP / (FP + TN))
 
 PrintROC.printROC(FNRate, FPRate, "Curva_ROC_FN_FP")
-PrintROC.printROC2(FPRate, TPRate, "Curva_ROC_FP_TP")
+# PrintROC.printROC2(FPRate, TPRate, "Curva_ROC_FP_TP")
