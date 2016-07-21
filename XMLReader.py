@@ -25,7 +25,6 @@ for umbral in np.arange(0, 1, 0.01):
         groundwith += 1
 
         with open('/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/face/C/' + childUser.attrib['name']) as f:
-        #with open("/home/alberto/Desktop/bssr1/face_x_face/sims/dos/face/C/" + childUser.attrib['name']) as f:
             lines = f.readlines()
             scores = lines[2:] # remove first 2 elements
             scores.pop() # remove last element
@@ -55,4 +54,3 @@ for umbral in np.arange(0, 1, 0.01):
     FPRate.append(FP / (FP + TN))
 
 PrintROC.printROC(FNRate, FPRate, "Curva_ROC_FN_FP")
-# PrintROC.printROC2(FPRate, TPRate, "Curva_ROC_FP_TP")
