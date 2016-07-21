@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import bisect
+import numpy as np
 
 def normalize_list(lst):
     r = max(lst) - min(lst)
@@ -9,8 +9,8 @@ def normalize_list(lst):
 
 def printROC(FNRate, FPRate, name):
     x = [0, 1]
-    FNRate = normalize_list(FNRate)
-    FPRate = normalize_list(FPRate)
+    # FNRate = normalize_list(FNRate)
+    # FPRate = normalize_list(FPRate)
 
     # FPRate, FNRate = (list(x) for x in zip(*sorted(zip(FPRate, FNRate), reverse=True, key=lambda pair: pair[0])))
 
@@ -50,7 +50,7 @@ def printROC2(FPRate, TPRate, name):
     dif = 1
     index = 0
     for y in range(0, len(TPRate)):
-        print(str(TPRate[y] - FPRate[y]))
+        # print(str(TPRate[y] - FPRate[y]))
         if TPRate[y] - FPRate[y] < dif:
             if (TPRate[y] - FPRate[y]) > 0:
                 dif = TPRate[y] - FPRate[y]
@@ -61,6 +61,8 @@ def printROC2(FPRate, TPRate, name):
     plt.ylabel('True Positive Rate')
     plt.title(name)
     plt.legend(loc="lower right")
-    # plt.show()
+    plt.show()
     plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
+    # auc = np.trapz(TPRate, FPRate)
+    # print(auc)
     plt.close()

@@ -11,14 +11,14 @@ TNRate = []
 FNRate = []
 FPRate = []
 
-TP = 0
-TN = 0
-FP = 0
-FN = 0
-
 for umbral in np.arange(0, 1, 0.01):
 
     groundwith = -1
+
+    TP = 0
+    TN = 0
+    FP = 0
+    FN = 0
 
     for childUser in rootUsers:
 
