@@ -5,3 +5,4 @@ matrix = mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/u
 
 roc = rc.calculate_roc(matrix)
 
+rc.draw_roc(roc)

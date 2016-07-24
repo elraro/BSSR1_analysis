@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def normalize_list(lst):
     r = max(lst) - min(lst)
@@ -26,8 +27,8 @@ def calculate_roc(matrix):
     dif = 1
     index = 0
     for y in range(0, len(fp_rate)):
-        if abs(fp_rate[y] - fp_rate[y]) < dif:
-            dif = abs(fp_rate[y] - fp_rate[y])
+        if abs(fp_rate[y] - fn_rate[y]) < dif:
+            dif = abs(fp_rate[y] - fn_rate[y])
             index = y
 
     roc = dict()
@@ -35,34 +36,19 @@ def calculate_roc(matrix):
     roc["tn_rate"] = tn_rate
     roc["fn_rate"] = fn_rate
     roc["fp_rate"] = fp_rate
-    roc["err"] = (fp_rate[index] + fp_rate[index + 1]) / 2
+    roc["eer"] = (fn_rate[index] + fn_rate[index + 1]) / 2
 
     return roc
-    #
-    #
-    # # FNRate = FNRate[::-1]
-    # # FPRate = FPRate[::-1]
-    # plt.figure()
-    # x = [0, 1]
-    # plt.plot(x, x, linestyle='dashed', color='red', linewidth=2, label='y = x')
-    # plt.plot(FNRate, FPRate, linewidth=1, color='blue', alpha=0.5)
-    #
-    # dif = 1
-    # index = 0
-    # for y in range(0, len(FPRate)):
-    #     print(str(abs(FPRate[y] - FNRate[y])))
-    #     print(index)
-    #     if abs(FPRate[y] - FNRate[y]) < dif:
-    #         dif = abs(FPRate[y] - FNRate[y])
-    #         index = y
-    # print("eer: " + str((FPRate[index] + FNRate[index+1]) / 2))
-    # print("index: " + str(index))
-    # plt.axvline(x=(FNRate[index] + FNRate[index + 1]) / 2, ymin=0, ymax=(FPRate[index] + FPRate[index + 1]) / 2,
-    #              color='black', linewidth=2, label='EER = ' + str((FNRate[index] + FNRate[index + 1]) / 2))
-    # plt.xlabel('False Negative Rate')
-    # plt.ylabel('False Positive Rate')
-    # plt.title("roc")
-    # plt.legend(loc="lower right")
-    # plt.show()
-    # # plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
-    # plt.close()
+
+def draw_roc(roc):
+    plt.figure()
+    x = [0, 1]
+    plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
+    plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color="blue", alpha=0.5, label="EER: " + str(roc["eer"]))
+    plt.xlabel("False Negative Rate")
+    plt.ylabel("False Positive Rate")
+    plt.title("roc")
+    plt.legend(loc="lower right")
+    plt.show()
+    # plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
+    plt.close()
