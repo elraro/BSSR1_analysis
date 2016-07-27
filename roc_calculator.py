@@ -1,13 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from collections import deque
 
-def normalize_list(lst):
-    r = max(lst) - min(lst)
-    # Normalize
-    normal = map(lambda x: (x - min(lst)) / r, lst)
-    return list(normal)
-
-def calculate_roc(matrix):
+def calculate_roc(matrix, name):
     identity = np.identity(517)
     tp_rate = np.empty(shape=0)
     tn_rate = np.empty(shape=0)
@@ -37,14 +32,17 @@ def calculate_roc(matrix):
     roc["fn_rate"] = fn_rate
     roc["fp_rate"] = fp_rate
     roc["eer"] = (fn_rate[index] + fn_rate[index + 1]) / 2
+    roc["name"] = name
 
     return roc
 
-def draw_roc(roc):
+def draw_roc(*args):
+    colours = create_colours()
     plt.figure()
     x = [0, 1]
     plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
-    plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color="blue", alpha=0.5, label="EER: " + str(roc["eer"]))
+    for roc in args:
+        plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5, label=roc["name"] + " EER: " + str(roc["eer"]))
     plt.xlabel("False Negative Rate")
     plt.ylabel("False Positive Rate")
     plt.title("roc")
@@ -52,3 +50,12 @@ def draw_roc(roc):
     plt.show()
     # plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
     plt.close()
+
+def create_colours():
+    colours = deque()
+    colours.append("blue")
+    colours.append("purple")
+    colours.append("green")
+    colours.append("brown")
+    colours.append("yellow")
+    return colours
