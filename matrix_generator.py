@@ -1,7 +1,8 @@
 import xml.etree.ElementTree as e_t
 import numpy as np
 
-def matrix_generator(file, folder, normalize):
+
+def matrix_generator(file, folder, normalize, name):
     tree_users = e_t.parse(file)
     root_users = tree_users.getroot()
     length = len(root_users)
@@ -18,4 +19,7 @@ def matrix_generator(file, folder, normalize):
             count += 1
     if normalize:
         matrix = matrix / matrix.max(axis=1)
-    return np.matrix(matrix)
+    r_matrix = dict()
+    r_matrix["matrix"] = np.matrix(matrix)
+    r_matrix["name"] = name
+    return r_matrix
