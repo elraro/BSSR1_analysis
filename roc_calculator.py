@@ -2,7 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import deque
 
-def calculate_roc(matrix, name):
+
+def calculate_roc(matrix_dict):
+    matrix = matrix_dict["matrix"]
+    name = matrix_dict["name"]
     identity = np.identity(517)
     tp_rate = np.empty(shape=0)
     tn_rate = np.empty(shape=0)
@@ -18,7 +21,6 @@ def calculate_roc(matrix, name):
         tn_rate = np.append(tn_rate, TN / (TN + FP))
         fn_rate = np.append(fn_rate, FN / (FN + + TP))
         fp_rate = np.append(fp_rate, FP / (FP + TN))
-
     dif = 1
     index = 0
     for y in range(0, len(fp_rate)):
@@ -33,15 +35,15 @@ def calculate_roc(matrix, name):
     roc["fp_rate"] = fp_rate
     roc["eer"] = (fn_rate[index] + fn_rate[index + 1]) / 2
     roc["name"] = name
-
     return roc
 
-def draw_roc(*args):
+
+def draw_roc(roc_values):
     colours = create_colours()
     plt.figure()
     x = [0, 1]
     plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
-    for roc in args:
+    for roc in roc_values:
         plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5, label=roc["name"] + " EER: " + str(roc["eer"]))
     plt.xlabel("False Negative Rate")
     plt.ylabel("False Positive Rate")
@@ -50,6 +52,7 @@ def draw_roc(*args):
     plt.show()
     # plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
     plt.close()
+
 
 def create_colours():
     colours = deque()
