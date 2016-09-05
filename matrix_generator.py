@@ -23,3 +23,31 @@ def matrix_generator(file, folder, normalize, name):
     r_matrix["matrix"] = np.matrix(matrix)
     r_matrix["name"] = name
     return r_matrix
+
+def matrix_generator_face_x_face(file, folder, normalize, name):
+    tree_users = e_t.parse(file)
+    root_users = tree_users.getroot()
+    length = int(len(root_users)/2)
+    matrix_even = np.empty((length, length))
+    matrix_odd = np.empty((length, length))
+    count = 0
+    for child_user in root_users:
+        with open(folder + child_user.attrib["name"]) as f:
+            lines = f.readlines()
+            scores = lines[2:]  # remove first 2 elements
+            scores.pop()  # remove last element
+            scores = [float(score.strip('\n')) for score in scores]
+            np.asarray(scores)
+            if (count % 2 == 0):
+                matrix_even[count] = scores
+            else:
+                matrix_odd[count] = scores
+                count += 1
+    if normalize:
+        matrix_even = matrix_even / matrix_even.max(axis=1)
+        matrix_odd = matrix_odd / matrix_odd.max(axis=1)
+    r_matrix = dict()
+    r_matrix["matrix_1"] = np.matrix(matrix_even)
+    r_matrix["matrix_2"] = np.matrix(matrix_odd)
+    r_matrix["name"] = name
+    return r_matrix

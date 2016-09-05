@@ -6,12 +6,12 @@ from collections import deque
 def calculate_roc(matrix_dict):
     matrix = matrix_dict["matrix"]
     name = matrix_dict["name"]
-    identity = np.identity(517)
+    identity = np.identity(len(matrix))
     tp_rate = np.empty(shape=0)
     tn_rate = np.empty(shape=0)
     fn_rate = np.empty(shape=0)
     fp_rate = np.empty(shape=0)
-    for umbral in np.arange(0, 1.01, 0.01):
+    for umbral in np.arange(0, 1.00, 0.01):
         # http://notmatthancock.github.io/2015/08/19/roc-curve-part-2-numerical-example.html
         TP = np.logical_and(matrix >= umbral, identity == 1).sum()
         TN = np.logical_and(matrix < umbral, identity == 0).sum()
@@ -38,7 +38,7 @@ def calculate_roc(matrix_dict):
     return roc
 
 
-def draw_roc(roc_values):
+def draw_roc(roc_values, title):
     colours = create_colours()
     plt.figure()
     x = [0, 1]
@@ -47,7 +47,7 @@ def draw_roc(roc_values):
         plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5, label=roc["name"] + " EER: " + str(roc["eer"]))
     plt.xlabel("False Negative Rate")
     plt.ylabel("False Positive Rate")
-    plt.title("roc")
+    plt.title(title)
     plt.legend(loc="lower right")
     plt.show()
     # plt.savefig('/home/alberto/Desktop/test/' + name + '.png')

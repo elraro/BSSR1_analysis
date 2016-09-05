@@ -18,4 +18,4 @@ roc_values = pool.map(rc.calculate_roc, matrix)
 pool.close()
 pool.join()
 
-rc.draw_roc(roc_values)
+rc.draw_roc(roc_values, "fing_x_face")
