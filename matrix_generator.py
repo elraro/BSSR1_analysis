@@ -18,11 +18,12 @@ def matrix_generator(file, folder, normalize, name):
             matrix[count] = scores
             count += 1
     if normalize:
-        matrix = matrix / matrix.max(axis=1)
+        matrix = matrix / matrix.max(axis=0)
     r_matrix = dict()
     r_matrix["matrix"] = np.matrix(matrix)
     r_matrix["name"] = name
     return r_matrix
+
 
 def matrix_generator_face_x_face(file, folder, normalize, name):
     tree_users = e_t.parse(file)
@@ -31,6 +32,7 @@ def matrix_generator_face_x_face(file, folder, normalize, name):
     matrix_even = np.empty((length, length))
     matrix_odd = np.empty((length, length))
     count = 0
+    even = True
     for child_user in root_users:
         with open(folder + child_user.attrib["name"]) as f:
             lines = f.readlines()
@@ -38,14 +40,16 @@ def matrix_generator_face_x_face(file, folder, normalize, name):
             scores.pop()  # remove last element
             scores = [float(score.strip('\n')) for score in scores]
             np.asarray(scores)
-            if (count % 2 == 0):
+            if even:
                 matrix_even[count] = scores
+                even = False
             else:
                 matrix_odd[count] = scores
                 count += 1
+                even = True
     if normalize:
-        matrix_even = matrix_even / matrix_even.max(axis=1)
-        matrix_odd = matrix_odd / matrix_odd.max(axis=1)
+        matrix_even = matrix_even / matrix_even.max(axis=0)
+        matrix_odd = matrix_odd / matrix_odd.max(axis=0)
     r_matrix = dict()
     r_matrix["matrix_1"] = np.matrix(matrix_even)
     r_matrix["matrix_2"] = np.matrix(matrix_odd)

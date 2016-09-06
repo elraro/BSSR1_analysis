@@ -5,11 +5,11 @@ from multiprocessing import Pool
 matrix = list()
 
 matrix.append(mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_fing/sets/dos/li/users.xml",
-                                    "/home/alberto/Desktop/bssr1/fing_x_fing/sims/dos/li/V/", True, "li v"))
+                                  "/home/alberto/Desktop/bssr1/fing_x_fing/sims/dos/li/V/", True, "li v"))
 matrix.append(mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_fing/sets/dos/ri/users.xml",
-                                    "/home/alberto/Desktop/bssr1/fing_x_fing/sims/dos/ri/V/", True, "ri v"))
+                                  "/home/alberto/Desktop/bssr1/fing_x_fing/sims/dos/ri/V/", True, "ri v"))
 
-pool = Pool(4)
+pool = Pool(2)
 roc_values = pool.map(rc.calculate_roc, matrix)
 pool.close()
 pool.join()
