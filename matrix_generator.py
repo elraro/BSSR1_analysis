@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as e_t
 import numpy as np
-# from sklearn.preprocessing import normalize as normalize_matrix
 
 
 def matrix_generator(file, folder, normalize, name):
