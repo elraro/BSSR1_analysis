@@ -27,13 +27,6 @@ def calculate_roc(matrix_dict):
         if fn_rate_err > fp_rate_err and not err_found:
             err = (fn_rate_err + fp_rate_err) / 2
             err_found = True
-    # dif = 1
-    # index = 0
-    # for y in range(0, len(fp_rate)):
-    #     if abs(fp_rate[y] - fn_rate[y]) < dif:
-    #         dif = abs(fp_rate[y] - fn_rate[y])
-    #         index = y
-
     roc = dict()
     roc["tp_rate"] = tp_rate
     roc["tn_rate"] = tn_rate
@@ -56,7 +49,6 @@ def draw_roc(roc_values, title):
     plt.title(title)
     plt.legend(loc="lower right")
     plt.show()
-    # plt.savefig('/home/alberto/Desktop/test/' + name + '.png')
     plt.close()
 
 
