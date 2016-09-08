@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as e_t
 import numpy as np
+# from sklearn.preprocessing import normalize as normalize_matrix
 
 
 def matrix_generator(file, folder, normalize, name):
@@ -18,7 +19,8 @@ def matrix_generator(file, folder, normalize, name):
             matrix[count] = scores
             count += 1
     if normalize:
-        matrix = matrix / matrix.max(axis=0)
+        matrix = normalize_matrix(matrix)
+        # matrix = matrix / matrix.max(axis=0)
     r_matrix = dict()
     r_matrix["matrix"] = np.matrix(matrix)
     r_matrix["name"] = name
@@ -48,10 +50,20 @@ def matrix_generator_face_x_face(file, folder, normalize, name):
                 count += 1
                 even = True
     if normalize:
-        matrix_even = matrix_even / matrix_even.max(axis=0)
-        matrix_odd = matrix_odd / matrix_odd.max(axis=0)
+        # matrix_even = matrix_even / matrix_even.max(axis=0)
+        # matrix_odd = matrix_odd / matrix_odd.max(axis=0)
+        matrix_even = normalize_matrix(matrix_even)
+        matrix_odd = normalize_matrix(matrix_odd)
     r_matrix = dict()
     r_matrix["matrix_1"] = np.matrix(matrix_even)
     r_matrix["matrix_2"] = np.matrix(matrix_odd)
     r_matrix["name"] = name
     return r_matrix
+
+
+def normalize_matrix(matrix):
+    # Normalize columns.
+    mins = np.min(matrix[:, :], axis=0)
+    maxs = np.max(matrix[:, :], axis=0)
+    normalized_matrix = (matrix[:, :] - mins) / (maxs - mins)
+    return np.nan_to_num(normalized_matrix)

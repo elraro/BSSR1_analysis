@@ -11,6 +11,7 @@ def calculate_roc(matrix_dict):
     tn_rate = np.empty(shape=0)
     fn_rate = np.empty(shape=0)
     fp_rate = np.empty(shape=0)
+    err_found = False
     for umbral in np.arange(0, 1.00, 0.01):
         # http://notmatthancock.github.io/2015/08/19/roc-curve-part-2-numerical-example.html
         TP = np.logical_and(matrix >= umbral, identity == 1).sum()
@@ -21,19 +22,24 @@ def calculate_roc(matrix_dict):
         tn_rate = np.append(tn_rate, TN / (TN + FP))
         fn_rate = np.append(fn_rate, FN / (FN + + TP))
         fp_rate = np.append(fp_rate, FP / (FP + TN))
-    dif = 1
-    index = 0
-    for y in range(0, len(fp_rate)):
-        if abs(fp_rate[y] - fn_rate[y]) < dif:
-            dif = abs(fp_rate[y] - fn_rate[y])
-            index = y
+        fn_rate_err = FN / (FN + + TP)
+        fp_rate_err = FP / (FP + TN)
+        if fn_rate_err > fp_rate_err and not err_found:
+            err = (fn_rate_err + fp_rate_err) / 2
+            err_found = True
+    # dif = 1
+    # index = 0
+    # for y in range(0, len(fp_rate)):
+    #     if abs(fp_rate[y] - fn_rate[y]) < dif:
+    #         dif = abs(fp_rate[y] - fn_rate[y])
+    #         index = y
 
     roc = dict()
     roc["tp_rate"] = tp_rate
     roc["tn_rate"] = tn_rate
     roc["fn_rate"] = fn_rate
     roc["fp_rate"] = fp_rate
-    roc["eer"] = (fn_rate[index] + fn_rate[index + 1]) / 2
+    roc["eer"] = err
     roc["name"] = name
     return roc
 
