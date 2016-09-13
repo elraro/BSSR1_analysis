@@ -21,7 +21,7 @@ def matrix_generator(file, folder, normalize, name):
         matrix = normalize_matrix(matrix)
     r_matrix = dict()
     r_matrix["matrix"] = np.matrix(matrix)
-    r_matrix["name"] = name
+    r_matrix["aux"] = name
     return r_matrix
 
 
@@ -53,7 +53,7 @@ def matrix_generator_face_x_face(file, folder, normalize, name):
     r_matrix = dict()
     r_matrix["matrix_1"] = np.matrix(matrix_even)
     r_matrix["matrix_2"] = np.matrix(matrix_odd)
-    r_matrix["name"] = name
+    r_matrix["aux"] = name
     return r_matrix
 
 

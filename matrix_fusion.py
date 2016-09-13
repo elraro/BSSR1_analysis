@@ -5,7 +5,7 @@ def matrix_fusion(matrix_1_dict, matrix_2_dict):
     matrix_list = list()
     matrix_1 = matrix_1_dict["matrix"]
     matrix_2 = matrix_2_dict["matrix"]
-    for alpha in np.arange(0.01, 1.0, 0.01):
+    for alpha in np.arange(0.01, 0.99, 0.01):
         matrix_list.append(matrix_fusion_alpha(matrix_1, matrix_2, alpha))
     return matrix_list
 

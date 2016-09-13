@@ -13,25 +13,25 @@ matrix_li_v = mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/
 matrix_ri_v = mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml",
                                   "/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/ri/V/", True, "ri v")
 
+# Fusion biometrica
 matrix_fusion_list = mf.matrix_fusion(matrix_face_c, matrix_li_v)
 
+# Dibujar curva ROC
+matrix_list = list()
+matrix_list.append(matrix_face_c)
+matrix_list.append(matrix_face_g)
+matrix_list.append(matrix_li_v)
+matrix_list.append(matrix_ri_v)
+
 pool = Pool(4)
-roc_values = pool.map(rc.calculate_roc, matrix_fusion_list)
+err_values = pool.map(rc.calculate_roc, matrix_fusion_list)
 pool.close()
 pool.join()
 
+pool = Pool(4)
+roc_values = pool.map(rc.calculate_roc, matrix_list)
+pool.close()
+pool.join()
 
-# Dibujar gráficas ROC
-
-# matrix = list()
-# matrix.append(matrix_face_c)
-# matrix.append(matrix_face_g)
-# matrix.append(matrix_li_v)
-# matrix.append(matrix_ri_v)
-#
-# pool = Pool(4)
-# roc_values = pool.map(rc.calculate_roc, matrix)
-# pool.close()
-# pool.join()
-#
-# rc.draw_roc(roc_values, "fing_x_face")
+rc.draw_roc_eer(err_values, "fing_x_face")
+rc.draw_roc(roc_values, "fing_x_face")

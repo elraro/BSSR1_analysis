@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import deque
-
+import sys
 
 def calculate_roc(matrix_dict):
     matrix = matrix_dict["matrix"]
@@ -43,8 +43,7 @@ def draw_roc(roc_values, title):
     x = [0, 1]
     plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
     for roc in roc_values:
-        plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5, label=roc["aux"] +
-                 " EER: " + str(roc["eer"]))
+        plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5, label=roc["aux"] + " EER: " + str(roc["eer"]))
     plt.xlabel("False Negative Rate")
     plt.ylabel("False Positive Rate")
     plt.title(title)
@@ -61,3 +60,14 @@ def create_colours():
     colours.append("brown")
     colours.append("yellow")
     return colours
+
+
+def draw_roc_eer(roc_values, title):
+    alpha = sys.maxsize
+    eer = sys.maxsize
+    for roc in roc_values:
+        if roc["eer"] < eer:
+            eer = roc["eer"]
+            alpha = roc["aux"]
+    print(alpha)
+    print(eer)
