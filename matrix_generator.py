@@ -19,7 +19,6 @@ def matrix_generator(file, folder, normalize, name):
             count += 1
     if normalize:
         matrix = normalize_matrix(matrix)
-        # matrix = matrix / matrix.max(axis=0)
     r_matrix = dict()
     r_matrix["matrix"] = np.matrix(matrix)
     r_matrix["name"] = name
@@ -49,8 +48,6 @@ def matrix_generator_face_x_face(file, folder, normalize, name):
                 count += 1
                 even = True
     if normalize:
-        # matrix_even = matrix_even / matrix_even.max(axis=0)
-        # matrix_odd = matrix_odd / matrix_odd.max(axis=0)
         matrix_even = normalize_matrix(matrix_even)
         matrix_odd = normalize_matrix(matrix_odd)
     r_matrix = dict()
