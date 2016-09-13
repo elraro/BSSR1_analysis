@@ -5,7 +5,7 @@ from collections import deque
 
 def calculate_roc(matrix_dict):
     matrix = matrix_dict["matrix"]
-    name = matrix_dict["name"]
+    aux = matrix_dict["aux"]
     identity = np.identity(len(matrix))
     tp_rate = np.empty(shape=0)
     tn_rate = np.empty(shape=0)
@@ -33,7 +33,7 @@ def calculate_roc(matrix_dict):
     roc["fn_rate"] = fn_rate
     roc["fp_rate"] = fp_rate
     roc["eer"] = err
-    roc["name"] = name
+    roc["aux"] = aux
     return roc
 
 
@@ -43,7 +43,8 @@ def draw_roc(roc_values, title):
     x = [0, 1]
     plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
     for roc in roc_values:
-        plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5, label=roc["name"] + " EER: " + str(roc["eer"]))
+        plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5, label=roc["aux"] +
+                 " EER: " + str(roc["eer"]))
     plt.xlabel("False Negative Rate")
     plt.ylabel("False Positive Rate")
     plt.title(title)
