@@ -12,7 +12,7 @@ def calculate_roc(matrix_dict):
     fn_rate = np.empty(shape=0)
     fp_rate = np.empty(shape=0)
     err_found = False
-    for umbral in np.arange(0, 1.00, 0.01):
+    for umbral in np.arange(0, 1.01, 0.01):
         # http://notmatthancock.github.io/2015/08/19/roc-curve-part-2-numerical-example.html
         TP = np.logical_and(matrix >= umbral, identity == 1).sum()
         TN = np.logical_and(matrix < umbral, identity == 0).sum()

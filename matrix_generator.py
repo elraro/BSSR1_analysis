@@ -13,7 +13,7 @@ def matrix_generator(file, folder, normalize, name):
             lines = f.readlines()
             scores = lines[2:]  # remove first 2 elements
             scores.pop()  # remove last element
-            scores = [float(score.strip('\n')) for score in scores]
+            scores = [float(score.strip('\n').strip('\r\n')) for score in scores]
             np.asarray(scores)
             matrix[count] = scores
             count += 1
