@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from collections import deque
 import sys
 
+
 def calculate_roc(matrix_dict):
     matrix = matrix_dict["matrix"]
     aux = matrix_dict["aux"]
@@ -62,12 +63,26 @@ def create_colours():
     return colours
 
 
-def draw_roc_eer(roc_values, title):
+def draw_roc_eer(roc_values, title, eer_1, eer_2):
     alpha = sys.maxsize
     eer = sys.maxsize
     for roc in roc_values:
         if roc["eer"] < eer:
             eer = roc["eer"]
             alpha = roc["aux"]
-    print(alpha)
-    print(eer)
+    plt.figure()  # figsize=(20,10) para aumentar el tamaño de la figura
+    plt.ylim([0, 0.05])
+    plt.hlines(eer_1, 0, 1, linestyle="dashed", color="red", linewidth=1)
+    plt.hlines(eer_2, 0, 1, linestyle="dashed", color="blue", linewidth=1)
+    eer_x = list()
+    eer_y = list()
+    for roc in roc_values:
+        eer_x.append(roc["aux"])
+        eer_y.append(roc["eer"])
+    plt.plot(eer_x, eer_y, linewidth=1, color="green", alpha=0.5, label="EER=" + str(eer) + " alpha=" + str(alpha))
+    plt.xlabel("alpha")
+    plt.ylabel("EER")
+    plt.title(title)
+    plt.legend(loc="lower right")
+    plt.show()
+    plt.close()
