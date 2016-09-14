@@ -49,7 +49,8 @@ def draw_roc(roc_values, title):
     plt.ylabel("False Positive Rate")
     plt.title(title)
     plt.legend(loc="lower right")
-    plt.show()
+    # plt.show()
+    plt.savefig(title + ".png")
     plt.close()
 
 
@@ -70,10 +71,10 @@ def draw_roc_eer(roc_values, title, eer_1, eer_2):
         if roc["eer"] < eer:
             eer = roc["eer"]
             alpha = roc["aux"]
-    plt.figure()  # figsize=(20,10) para aumentar el tamaño de la figura
+    plt.figure(figsize=(20,10))  # figsize=(20,10) para aumentar el tamaño de la figura
     plt.ylim([0, 0.05])
-    plt.hlines(eer_1, 0, 1, linestyle="dashed", color="red", linewidth=1)
-    plt.hlines(eer_2, 0, 1, linestyle="dashed", color="blue", linewidth=1)
+    plt.hlines(eer_1, 0, 1, linestyle="dashed", color="red", linewidth=1, label="EER=" + str(eer_1))
+    plt.hlines(eer_2, 0, 1, linestyle="dashed", color="blue", linewidth=1, label="EER=" + str(eer_2))
     eer_x = list()
     eer_y = list()
     for roc in roc_values:
@@ -83,6 +84,7 @@ def draw_roc_eer(roc_values, title, eer_1, eer_2):
     plt.xlabel("alpha")
     plt.ylabel("EER")
     plt.title(title)
-    plt.legend(loc="lower right")
-    plt.show()
+    plt.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
+    # plt.show()
+    plt.savefig(title + ".png")
     plt.close()
