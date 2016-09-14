@@ -13,15 +13,15 @@ def matrix_generator(file, folder, normalize, name):
             lines = f.readlines()
             scores = lines[2:]  # remove first 2 elements
             scores.pop()  # remove last element
-            scores = [float(score.strip('\n')) for score in scores]
+            scores = [float(score.strip('\n').strip('\r\n')) for score in scores]
             np.asarray(scores)
             matrix[count] = scores
             count += 1
     if normalize:
-        matrix = matrix / matrix.max(axis=0)
+        matrix = normalize_matrix(matrix)
     r_matrix = dict()
     r_matrix["matrix"] = np.matrix(matrix)
-    r_matrix["name"] = name
+    r_matrix["aux"] = name
     return r_matrix
 
 
@@ -48,10 +48,18 @@ def matrix_generator_face_x_face(file, folder, normalize, name):
                 count += 1
                 even = True
     if normalize:
-        matrix_even = matrix_even / matrix_even.max(axis=0)
-        matrix_odd = matrix_odd / matrix_odd.max(axis=0)
+        matrix_even = normalize_matrix(matrix_even)
+        matrix_odd = normalize_matrix(matrix_odd)
     r_matrix = dict()
     r_matrix["matrix_1"] = np.matrix(matrix_even)
     r_matrix["matrix_2"] = np.matrix(matrix_odd)
-    r_matrix["name"] = name
+    r_matrix["aux"] = name
     return r_matrix
+
+
+def normalize_matrix(matrix):
+    # Normalize columns.
+    mins = np.min(matrix[:, :], axis=0)
+    maxs = np.max(matrix[:, :], axis=0)
+    normalized_matrix = (matrix[:, :] - mins) / (maxs - mins)
+    return np.nan_to_num(normalized_matrix)
