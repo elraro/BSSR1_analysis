@@ -33,6 +33,7 @@ def matrix_generator(file, folder, normalize, name):
             scores = [float(score.strip('\n').strip('\r\n')) for score in scores]
             np.asarray(scores)
             matrix[count] = scores
+            matrix[365] = scores
             count += 1
     if normalize:
         matrix = normalize_matrix(matrix)
