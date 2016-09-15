@@ -1,5 +1,22 @@
 import xml.etree.ElementTree as e_t
 import numpy as np
+from sklearn.cross_validation import StratifiedShuffleSplit
+
+
+def partition_matrix(matrix):
+    # Train and test partitions
+    y = matrix[:, -1]
+    sss = StratifiedShuffleSplit(y, 1, test_size=0.5, random_state=1)
+    normalized_matrix = []
+    normalized_matrix2 = []
+    for train_index, test_index in sss:
+        for i in train_index:
+            normalized_matrix.append(matrix[i])
+        for i in test_index:
+            normalized_matrix2.append(matrix[i])
+    normalized_matrix = np.array(normalized_matrix)
+    normalized_matrix2 = np.array(normalized_matrix2)
+    return normalized_matrix, normalized_matrix2
 
 
 def matrix_generator(file, folder, normalize, name):
@@ -20,8 +37,11 @@ def matrix_generator(file, folder, normalize, name):
     if normalize:
         matrix = normalize_matrix(matrix)
     r_matrix = dict()
-    r_matrix["matrix"] = np.matrix(matrix)
+    r_matrix["matrix_total"] = np.matrix(matrix)
+    training, test = partition_matrix(r_matrix["matrix_total"])
     r_matrix["aux"] = name
+    r_matrix["matrix"] = training
+    r_matrix["test"] = test
     return r_matrix
 
 
