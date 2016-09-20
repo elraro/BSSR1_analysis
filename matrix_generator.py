@@ -1,50 +1,17 @@
 import xml.etree.ElementTree as e_t
 import numpy as np
-import sys
-from sklearn.cross_validation import StratifiedShuffleSplit
+from sklearn.cross_validation import train_test_split
 
 
 def partition_matrix(matrix):
     # Train and test partitions
-    print(matrix[0])
-    sss = StratifiedShuffleSplit(matrix, 1, test_size=0.5, random_state=1)
-    normalized_matrix = []
-    normalized_matrix2 = []
-    for train_index, test_index in sss:
-        for i in train_index:
-            normalized_matrix.append(matrix[i])
-        for i in test_index:
-            normalized_matrix2.append(matrix[i])
-    normalized_matrix = np.array(normalized_matrix)
-    normalized_matrix2 = np.array(normalized_matrix2)
-    return normalized_matrix, normalized_matrix2
+    y = range(517)
+    matrix_train, matrix_test, list_train, list_test = train_test_split(matrix, y, test_size=0.33, random_state=42)
+    #return normalized_matrix, normalized_matrix2
+    return "asd"
 
-
-def matrix_generator(file, folder, normalize, name):
-    tree_users = e_t.parse(file)
-    root_users = tree_users.getroot()
-    length = len(root_users)
-    matrix = np.empty([length, length])
-    count = 0
-    for child_user in root_users:
-        with open(folder + child_user.attrib["name"]) as f:
-            lines = f.readlines()
-            scores = lines[2:]  # remove first 2 elements
-            scores.pop()  # remove last element
-            scores = [float(score.strip('\n').strip('\r\n')) for score in scores]
-
-            ## TODO
-            # Voy a generar 1 sola vez la matrix y luego ya la leo infinitas veces
-
-
-            #matrix = np.genfromtxt(scores, dtype=np.float,
-            #                       skip_header=2, skip_footer=1, delimiter="\n")
-
-            # np.asarray(scores)
-            matrix[count] = scores
-            count += 1
-    np.savetxt("/home/alberto/Desktop/test.txt", matrix, fmt="%.7e", delimiter=",", newline="\n",
-               header="Matrix fing_x_face", footer="End Matrix", comments='# ')
+def matrix_generator(file, normalize, name):
+    matrix = np.genfromtxt(file, dtype=np.float, comments="#", delimiter=",")
     if normalize:
         matrix = normalize_matrix(matrix)
     r_matrix = dict()

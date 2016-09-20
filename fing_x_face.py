@@ -7,14 +7,10 @@ from datetime import datetime
 
 startTime = datetime.now()
 
-matrix_face_c = mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml",
-                                    "/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/face/C/", True, "face c")
-matrix_face_g = mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml",
-                                    "/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/face/G/", True, "face g")
-matrix_li_v = mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml",
-                                  "/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/li/V/", True, "li v")
-matrix_ri_v = mg.matrix_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml",
-                                  "/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/ri/V/", True, "ri v")
+matrix_face_c = mg.matrix_generator("/home/alberto/Desktop/face c.txt", True, "face c")
+matrix_face_g = mg.matrix_generator("/home/alberto/Desktop/face g.txt", True, "face g")
+matrix_li_v = mg.matrix_generator("/home/alberto/Desktop/li v.txt", True, "li v")
+matrix_ri_v = mg.matrix_generator("/home/alberto/Desktop/ri v.txt", True, "ri v")
 
 # Fusion biometrica
 matrix_fusion_list_face_c_face_g = mf.matrix_fusion(matrix_face_c, matrix_face_g)
