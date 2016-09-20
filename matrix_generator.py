@@ -1,12 +1,13 @@
 import xml.etree.ElementTree as e_t
 import numpy as np
+import sys
 from sklearn.cross_validation import StratifiedShuffleSplit
 
 
 def partition_matrix(matrix):
     # Train and test partitions
-    y = matrix[:, -1]
-    sss = StratifiedShuffleSplit(y, 1, test_size=0.5, random_state=1)
+    print(matrix[0])
+    sss = StratifiedShuffleSplit(matrix, 1, test_size=0.5, random_state=1)
     normalized_matrix = []
     normalized_matrix2 = []
     for train_index, test_index in sss:
@@ -23,7 +24,7 @@ def matrix_generator(file, folder, normalize, name):
     tree_users = e_t.parse(file)
     root_users = tree_users.getroot()
     length = len(root_users)
-    matrix = np.empty((length, length))
+    matrix = np.empty([length, length])
     count = 0
     for child_user in root_users:
         with open(folder + child_user.attrib["name"]) as f:
@@ -31,14 +32,23 @@ def matrix_generator(file, folder, normalize, name):
             scores = lines[2:]  # remove first 2 elements
             scores.pop()  # remove last element
             scores = [float(score.strip('\n').strip('\r\n')) for score in scores]
-            np.asarray(scores)
+
+            ## TODO
+            # Voy a generar 1 sola vez la matrix y luego ya la leo infinitas veces
+
+
+            #matrix = np.genfromtxt(scores, dtype=np.float,
+            #                       skip_header=2, skip_footer=1, delimiter="\n")
+
+            # np.asarray(scores)
             matrix[count] = scores
-            matrix[365] = scores
             count += 1
+    np.savetxt("/home/alberto/Desktop/test.txt", matrix, fmt="%.7e", delimiter=",", newline="\n",
+               header="Matrix fing_x_face", footer="End Matrix", comments='# ')
     if normalize:
         matrix = normalize_matrix(matrix)
     r_matrix = dict()
-    r_matrix["matrix_total"] = np.matrix(matrix)
+    r_matrix["matrix_total"] = matrix # np.matrix(matrix)
     training, test = partition_matrix(r_matrix["matrix_total"])
     r_matrix["aux"] = name
     r_matrix["matrix"] = training
