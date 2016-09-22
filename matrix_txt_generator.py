@@ -1,9 +1,9 @@
-import xml.etree.ElementTree as e_t
+import xml.etree.ElementTree as eT
 import numpy as np
 
 
 def txt_generator(file, folder, name):
-    tree_users = e_t.parse(file)
+    tree_users = eT.parse(file)
     root_users = tree_users.getroot()
     length = len(root_users)
     matrix = np.empty([length, length])
@@ -18,6 +18,7 @@ def txt_generator(file, folder, name):
             count += 1
     np.savetxt("/home/alberto/Desktop/" + name + ".txt", matrix, fmt="%.7e", delimiter=",", newline="\n",
                header="Matrix " + name, footer="End Matrix", comments='# ')
+
 
 txt_generator("/home/alberto/Desktop/bssr1/fing_x_face/sets/dos/users.xml",
               "/home/alberto/Desktop/bssr1/fing_x_face/sims/dos/face/C/", "face c")
