@@ -69,10 +69,6 @@ def create_colours():
 def draw_roc_eer(roc_values, title, eer_1, eer_2):
     alpha = sys.maxsize
     eer = sys.maxsize
-    for roc in roc_values:
-        if roc["eer"] < eer:
-            eer = roc["eer"]
-            alpha = roc["aux"]
     plt.figure(figsize=(20, 10))  # figsize=(20,10) para aumentar el tamaño de la figura
     plt.ylim([0, 0.05])
     plt.hlines(eer_1, 0, 1, linestyle="dashed", color="red", linewidth=1, label="EER=" + str(eer_1))
@@ -82,6 +78,9 @@ def draw_roc_eer(roc_values, title, eer_1, eer_2):
     for roc in roc_values:
         eer_x.append(roc["aux"])
         eer_y.append(roc["eer"])
+        if roc["eer"] < eer:
+            eer = roc["eer"]
+            alpha = roc["aux"]
     plt.plot(eer_x, eer_y, linewidth=1, color="green", alpha=0.5, label="EER=" + str(eer) + " alpha=" + str(alpha))
     plt.xlabel("alpha")
     plt.ylabel("EER")
