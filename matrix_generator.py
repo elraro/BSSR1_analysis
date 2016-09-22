@@ -5,8 +5,8 @@ def partition_matrix(matrix, percent_test):
     # Train and test partitions
     total = len(matrix)
     train = int(total * percent_test)
-    matrix_train = matrix[0:train,0:train]
-    matrix_test = matrix[train:total,train:total]
+    matrix_train = matrix[0:train, 0:train]
+    matrix_test = matrix[train:total, train:total]
     return matrix_train, matrix_test
 
 
