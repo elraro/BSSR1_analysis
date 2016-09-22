@@ -89,3 +89,4 @@ def draw_roc_eer(roc_values, title, eer_1, eer_2):
     # plt.show()
     plt.savefig(title + ".png")
     plt.close()
+    return alpha
