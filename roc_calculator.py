@@ -90,3 +90,37 @@ def draw_roc_eer(roc_values, title, eer_1, eer_2):
     plt.savefig(title + ".png")
     plt.close()
     return alpha
+
+
+def draw_roc_alphas(alpha_1, alpha_2, alpha_3, eer_1_list, eer_2_list, eer_3_list, text_1, text_2, text_3, title):
+    for eer in eer_1_list:
+        if eer["aux"] == alpha_1:
+            eer_1 = eer
+            break
+    for eer in eer_2_list:
+        if eer["aux"] == alpha_2:
+            eer_2 = eer
+            break
+    for eer in eer_3_list:
+        if eer["aux"] == alpha_3:
+            eer_3 = eer
+            break
+    colours = create_colours()
+    plt.figure()
+    x = [0, 1]
+    plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
+    #for roc in roc_values:
+    plt.plot(eer_1["fn_rate"], eer_1["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
+             label=text_1 + "alpha=" + str(eer_1["aux"]) + " eer=" + str(eer_1["eer"]))
+    plt.plot(eer_2["fn_rate"], eer_2["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
+             label=text_2 + "alpha=" + str(eer_2["aux"]) + " eer=" + str(eer_2["eer"]))
+    plt.plot(eer_3["fn_rate"], eer_3["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
+             label=text_3 + "alpha=" + str(eer_3["aux"]) + " eer=" + str(eer_3["eer"]))
+    plt.xlabel("False Negative Rate")
+    plt.ylabel("False Positive Rate")
+    plt.title(title)
+    plt.legend(loc="lower right")
+    # plt.show()
+    plt.savefig(title + ".png")
+    plt.close()
+    return None
