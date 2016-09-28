@@ -4,7 +4,7 @@ from collections import deque
 import sys
 
 
-def calculate_roc(matrix_dict):
+def calculate_eer_train(matrix_dict):
     matrix = matrix_dict["matrix"]
     aux = matrix_dict["aux"]
     identity = np.identity(len(matrix))
@@ -24,7 +24,7 @@ def calculate_roc(matrix_dict):
         tn_rate = np.append(tn_rate, tn / (tn + fp))
         fn_rate = np.append(fn_rate, fn / (fn + + tp))
         fp_rate = np.append(fp_rate, fp / (fp + tn))
-        fn_rate_err = fn / (fn + + tp)
+        fn_rate_err = fn / (fn + tp)
         fp_rate_err = fp / (fp + tn)
         if fn_rate_err > fp_rate_err and not err_found:
             err = (fn_rate_err + fp_rate_err) / 2
@@ -39,14 +39,28 @@ def calculate_roc(matrix_dict):
     return roc
 
 
-def draw_roc(roc_values, title):
+def calculate_alpha(eer_values):
+    alpha = sys.maxsize
+    eer = sys.maxsize
+    for eer_aux in eer_values:
+        if eer_aux["eer"] < eer:
+            eer = eer_aux["eer"]
+            alpha = eer_aux["aux"]
+    return alpha
+
+
+def draw_roc(roc_values, title, title_fusion=""):
     colours = create_colours()
     plt.figure()
     x = [0, 1]
     plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
     for roc in roc_values:
-        plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
-                 label=roc["aux"] + " EER: " + str(roc["eer"]))
+        if type(roc["aux"]) != str:
+            plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
+                     label=title_fusion + " a=" + str(roc["aux"]) + " EER=" + str(roc["eer"]))
+        else:
+            plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
+                     label=roc["aux"] + " EER=" + str(roc["eer"]))
     plt.xlabel("False Negative Rate")
     plt.ylabel("False Positive Rate")
     plt.title(title)
@@ -54,6 +68,26 @@ def draw_roc(roc_values, title):
     # plt.show()
     plt.savefig(title + ".png")
     plt.close()
+
+
+def draw_compare_eer(roc_values, title, eer_1, eer_2, label_eer_1, label_eer_2):
+    plt.figure(figsize=(20, 10))  # figsize=(20,10) para aumentar el tamaño de la figura
+    plt.ylim([0, 0.05])
+    plt.hlines(eer_1, 0, 1, linestyle="dashed", color="red", linewidth=1, label="EER=" + label_eer_1)
+    plt.hlines(eer_2, 0, 1, linestyle="dashed", color="blue", linewidth=1, label="EER=" + label_eer_2)
+    eer_x = list()
+    eer_y = list()
+    for roc in roc_values:
+        eer_x.append(roc["aux"])
+        eer_y.append(roc["eer"])
+    plt.plot(eer_x, eer_y, linewidth=1, color="green", alpha=0.5, label="EER fusion")
+    plt.xlabel("alpha")
+    plt.ylabel("EER")
+    plt.title(title)
+    plt.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
+    # plt.show()
+    plt.savefig(title + ".png")
+plt.close()
 
 
 def create_colours():
@@ -64,63 +98,3 @@ def create_colours():
     colours.append("brown")
     colours.append("yellow")
     return colours
-
-
-def draw_roc_eer(roc_values, title, eer_1, eer_2):
-    alpha = sys.maxsize
-    eer = sys.maxsize
-    plt.figure(figsize=(20, 10))  # figsize=(20,10) para aumentar el tamaño de la figura
-    plt.ylim([0, 0.05])
-    plt.hlines(eer_1, 0, 1, linestyle="dashed", color="red", linewidth=1, label="EER=" + str(eer_1))
-    plt.hlines(eer_2, 0, 1, linestyle="dashed", color="blue", linewidth=1, label="EER=" + str(eer_2))
-    eer_x = list()
-    eer_y = list()
-    for roc in roc_values:
-        eer_x.append(roc["aux"])
-        eer_y.append(roc["eer"])
-        if roc["eer"] < eer:
-            eer = roc["eer"]
-            alpha = roc["aux"]
-    plt.plot(eer_x, eer_y, linewidth=1, color="green", alpha=0.5, label="EER=" + str(eer) + " alpha=" + str(alpha))
-    plt.xlabel("alpha")
-    plt.ylabel("EER")
-    plt.title(title)
-    plt.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
-    # plt.show()
-    plt.savefig(title + ".png")
-    plt.close()
-    return alpha
-
-
-def draw_roc_alphas(alpha_1, alpha_2, alpha_3, eer_1_list, eer_2_list, eer_3_list, text_1, text_2, text_3, title):
-    for eer in eer_1_list:
-        if eer["aux"] == alpha_1:
-            eer_1 = eer
-            break
-    for eer in eer_2_list:
-        if eer["aux"] == alpha_2:
-            eer_2 = eer
-            break
-    for eer in eer_3_list:
-        if eer["aux"] == alpha_3:
-            eer_3 = eer
-            break
-    colours = create_colours()
-    plt.figure()
-    x = [0, 1]
-    plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
-    #for roc in roc_values:
-    plt.plot(eer_1["fn_rate"], eer_1["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
-             label=text_1 + "alpha=" + str(eer_1["aux"]) + " eer=" + str(eer_1["eer"]))
-    plt.plot(eer_2["fn_rate"], eer_2["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
-             label=text_2 + "alpha=" + str(eer_2["aux"]) + " eer=" + str(eer_2["eer"]))
-    plt.plot(eer_3["fn_rate"], eer_3["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
-             label=text_3 + "alpha=" + str(eer_3["aux"]) + " eer=" + str(eer_3["eer"]))
-    plt.xlabel("False Negative Rate")
-    plt.ylabel("False Positive Rate")
-    plt.title(title)
-    plt.legend(loc="lower right")
-    # plt.show()
-    plt.savefig(title + ".png")
-    plt.close()
-    return None
