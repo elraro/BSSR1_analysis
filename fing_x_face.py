@@ -13,6 +13,7 @@ def find_eer(eer_list, alpha):
             break
     return aux
 
+
 startTime = datetime.now()
 
 # Voy a leer las matrices
@@ -98,7 +99,3 @@ compare.append(find_eer(eer_values["eer_values_face_g_ri_v_test"], alphas["alpha
 rc.draw_roc(compare, "Fusion face G - finger ri EER", "fusion")
 
 print("Executed in: " + str(datetime.now() - startTime))
-
-
-
-
