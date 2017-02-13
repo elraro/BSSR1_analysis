@@ -51,16 +51,23 @@ def calculate_alpha(eer_values):
 
 def draw_roc(roc_values, title, title_fusion=""):
     colours = create_colours()
+    plt.rcParams['text.usetex'] = True
+    # plt.rcParams['text.latex.preamble'] = [r'\usepackage[cm]{sfmath}']
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = 'cm'
+    plt.rcParams['axes.autolimit_mode'] = 'round_numbers'
+    plt.rcParams['axes.xmargin'] = 0
+    plt.rcParams['axes.ymargin'] = 0
     plt.figure()
     x = [0, 1]
     plt.plot(x, x, linestyle="dashed", color="red", linewidth=1)
     for roc in roc_values:
         if type(roc["aux"]) != str:
             plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
-                     label=title_fusion + " a=" + str(roc["aux"]) + " EER=" + str(roc["eer"]))
+                     label=title_fusion + " a=" + str(roc["aux"]) + " EER=" + str("{0:.4f}".format(roc["eer"])))
         else:
             plt.plot(roc["fn_rate"], roc["fp_rate"], linewidth=1, color=colours.popleft(), alpha=0.5,
-                     label=roc["aux"] + " EER=" + str(roc["eer"]))
+                     label=roc["aux"] + " EER=" + str("{0:.4f}".format(roc["eer"])))
     plt.xlabel("False Negative Rate")
     plt.ylabel("False Positive Rate")
     plt.title(title)
@@ -71,6 +78,13 @@ def draw_roc(roc_values, title, title_fusion=""):
 
 
 def draw_compare_eer(roc_values, title, eer_1, eer_2, label_eer_1, label_eer_2):
+    plt.rcParams['text.usetex'] = True
+    # plt.rcParams['text.latex.preamble'] = [r'\usepackage[cm]{sfmath}']
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = 'cm'
+    plt.rcParams['axes.autolimit_mode'] = 'round_numbers'
+    plt.rcParams['axes.xmargin'] = 0
+    plt.rcParams['axes.ymargin'] = 0
     plt.figure(figsize=(20, 10))  # figsize=(20,10) para aumentar el tamaño de la figura
     plt.ylim([0, 0.05])
     plt.hlines(eer_1, 0, 1, linestyle="dashed", color="red", linewidth=1, label="EER=" + label_eer_1)
