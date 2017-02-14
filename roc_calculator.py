@@ -23,11 +23,11 @@ def calculate_eer_train(matrix_dict):
         tn_rate = np.append(tn_rate, tn / (tn + fp))
         fn_rate = np.append(fn_rate, fn / (fn + + tp))
         fp_rate = np.append(fp_rate, fp / (fp + tn))
-        fn_rate_err = fn / (fn + tp)
-        fp_rate_err = fp / (fp + tn)
-        if abs(fp_rate_err - fn_rate_err) < eer_dif:
-            eer_dif = abs(fp_rate_err - fn_rate_err)
-            eer = (fp_rate_err + fn_rate_err) / 2
+        fn_rate_eer = fn / (fn + tp)
+        fp_rate_eer = fp / (fp + tn)
+        if abs(fp_rate_eer - fn_rate_eer) < eer_dif:
+            eer_dif = abs(fp_rate_eer - fn_rate_eer)
+            eer = (fp_rate_eer + fn_rate_eer) / 2
     roc = dict()
     roc["tp_rate"] = tp_rate
     roc["tn_rate"] = tn_rate
