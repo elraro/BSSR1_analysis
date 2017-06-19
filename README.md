@@ -4,7 +4,7 @@ Trabajo Fin de Grado en Ingeniería de Computadores. Análisis de la influencia
 
 ## Licencia
 
-[![License](https://img.shields.io/github/license/elraro/EmailFinder.svg)](https://github.com/AIS17/PracticaAIS17/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/github/license/elraro/EmailFinder.svg)](https://github.com/BSSR1_analysis/BSSR1_analysis/blob/master/LICENSE.txt)
 
 BSSR1_analysis is licensed under GPLv2 as free software. You are free to use, modify and redistribute BSSR1_analysis following the terms in LICENSE.txt.
 
