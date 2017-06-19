@@ -70,7 +70,7 @@ def draw_roc(roc_values, title, title_fusion=""):
     plt.ylabel("False Positive Rate")
     plt.title(title)
     plt.legend(loc="lower right")
-    plt.savefig(title + ".png")
+    plt.savefig(title + ".eps", format='eps', dpi=1000)
     plt.close()
 
 
@@ -95,7 +95,7 @@ def draw_compare_eer(roc_values, title, eer_1, eer_2, label_eer_1, label_eer_2):
     plt.ylabel("EER")
     plt.title(title)
     plt.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
-    plt.savefig(title + ".png")
+    plt.savefig(title + ".eps", format='eps', dpi=1000)
 plt.close()
 
 
